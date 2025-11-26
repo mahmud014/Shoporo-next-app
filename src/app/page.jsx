@@ -1,7 +1,9 @@
+import Hero from "@/Components/Shared/Hero";
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <h1>Hello Next JS</h1>
-    </div>
+    <main className="min-h-screen font-sans dark:bg-black my-10">
+      <Hero></Hero>
+    </main>
   );
 }
