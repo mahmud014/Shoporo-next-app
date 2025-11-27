@@ -1,0 +1,129 @@
+"use client";
+
+import PrivateRoute from "@/Components/PrivateRoute";
+import { useAuth } from "@/Context/AuthContext";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+
+export default function ManageProductsPage() {
+  const { user } = useAuth();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user?.email) {
+      setProducts([]);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+
+    async function fetchProducts() {
+      try {
+        const res = await fetch(
+          `http://localhost:4000/products?email=${user.email}`
+        );
+        const data = await res.json();
+        setProducts(
+          data.map((p) => ({
+            ...p,
+            _id: typeof p._id === "string" ? p._id : p._id.$oid,
+          }))
+        );
+      } catch (err) {
+        console.error(err);
+        Swal.fire("Error", "Failed to fetch your products.", "error");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, [user?.email]);
+
+  // Delete product
+  const handleDelete = async (id) => {
+    const confirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "This product will be deleted permanently.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    try {
+      const res = await fetch(`http://localhost:4000/products/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Delete failed");
+
+      Swal.fire("Deleted!", "Product has been deleted.", "success");
+
+      // Remove deleted product from state
+      setProducts((prev) => prev.filter((p) => p._id !== id));
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", "Failed to delete product.", "error");
+    }
+  };
+
+  if (loading)
+    return <p className="text-center mt-10 text-gray-600">Loading...</p>;
+
+  return (
+    <PrivateRoute>
+      <div className="container mx-auto px-4 py-10">
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          Manage Your Products
+        </h1>
+
+        {products.length === 0 ? (
+          <p className="text-center text-gray-500">
+            You have not added any products yet.
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full border border-gray-200 rounded-lg">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-4 py-2 border">Name</th>
+                  <th className="px-4 py-2 border">Category</th>
+                  <th className="px-4 py-2 border">Price</th>
+                  <th className="px-4 py-2 border">Stock</th>
+                  <th className="px-4 py-2 border">Created At</th>
+                  <th className="px-4 py-2 border">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((p) => (
+                  <tr key={p._id} className="text-center">
+                    <td className="px-4 py-2 border">{p.name}</td>
+                    <td className="px-4 py-2 border">{p.category}</td>
+                    <td className="px-4 py-2 border">${p.price}</td>
+                    <td className="px-4 py-2 border">{p.stock}</td>
+                    <td className="px-4 py-2 border">
+                      {new Date(p.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-2 border">
+                      <button
+                        onClick={() => handleDelete(p._id)}
+                        className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </PrivateRoute>
+  );
+}

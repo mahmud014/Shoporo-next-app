@@ -9,7 +9,7 @@
 }
 
 .btn-primary-gradient {
-  @apply text-white bg-gradient-to-r from-blue-500 to-teal-500;
+  @apply text-white bg-linear-to-r from-blue-500 to-teal-500;
 }
 
 :root {

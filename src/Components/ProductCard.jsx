@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function ProductCard({ product }) {
   const productId = product._id;
   const shortDescription =
-    product.description.length > 55
+    product.description.length > 40
       ? product.description.slice(0, 40) + "..."
       : product.description;
 

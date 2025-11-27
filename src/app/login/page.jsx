@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { IoEyeOff } from "react-icons/io5";
-import { FaEye, FaGoogle } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/Context/AuthContext";
 
 export default function LoginPage() {
@@ -14,6 +15,10 @@ export default function LoginPage() {
   const [showPass, setShowPass] = useState(false);
   const { login, signInWithGoogle } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Get redirect path or fallback to home
+  const redirectPath = searchParams.get("redirect") || "/";
 
   // Email/password login
   const handleLogin = async (e) => {
@@ -34,7 +39,7 @@ export default function LoginPage() {
         title: "Login Successful",
         text: `Welcome back, ${email}!`,
       });
-      router.push("/dashboard");
+      router.push(redirectPath);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -53,7 +58,7 @@ export default function LoginPage() {
         title: "Login Successful",
         text: "You are logged in with Google!",
       });
-      router.push("/dashboard");
+      router.push(redirectPath);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -122,7 +127,7 @@ export default function LoginPage() {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition"
+            className="w-full btn-primary-gradient cursor-pointer text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition"
           >
             Login
           </button>
@@ -130,17 +135,17 @@ export default function LoginPage() {
 
         {/* Divider */}
         <div className="flex items-center my-5">
-          <hr className="flex-grow border-t border-gray-300" />
+          <hr className="grow border-t border-gray-300" />
           <span className="mx-3 text-gray-400">or</span>
-          <hr className="flex-grow border-t border-gray-300" />
+          <hr className="grow border-t border-gray-300" />
         </div>
 
         {/* Google Login */}
         <button
           onClick={handleGoogleLogin}
-          className="w-full flex items-center justify-center gap-2 bg-red-500 text-white py-3 rounded-xl hover:bg-red-600 transition"
+          className="w-full flex items-center justify-center gap-2 cursor-pointer bg-gray-300 text-black py-3 rounded-xl transition"
         >
-          <FaGoogle size={20} />
+          <FcGoogle size={24} />
           Sign in with Google
         </button>
 

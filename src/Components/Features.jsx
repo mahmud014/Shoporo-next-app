@@ -44,7 +44,7 @@ export default function FeaturedProducts() {
             <ProductCard key={product._id} product={product} />
           ))}
         </div>
-        <div className="text-center mt-5">
+        <div className="text-center mt-7">
           <Link href={"/products"} className="btn btn-primary-gradient ">
             See All Products
           </Link>
