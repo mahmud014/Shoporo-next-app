@@ -1,17 +1,23 @@
 "use client";
+
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { IoEyeOff } from "react-icons/io5";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaGoogle } from "react-icons/fa";
+
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/Context/AuthContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
+  const { login, signInWithGoogle } = useAuth();
+  const router = useRouter();
 
-  const handleLogin = (e) => {
+  // Email/password login
+  const handleLogin = async (e) => {
     e.preventDefault();
-
     if (!email || !password) {
       Swal.fire({
         icon: "error",
@@ -21,23 +27,52 @@ export default function LoginPage() {
       return;
     }
 
-    Swal.fire({
-      icon: "success",
-      title: "Login Successful",
-      text: "You logged in without backend!",
-    });
+    try {
+      await login(email, password);
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful",
+        text: `Welcome back, ${email}!`,
+      });
+      router.push("/dashboard");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: error.message,
+      });
+    }
+  };
 
-    setEmail("");
-    setPassword("");
+  // Google Sign-In
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithGoogle();
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful",
+        text: "You are logged in with Google!",
+      });
+      router.push("/dashboard");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: error.message,
+      });
+    }
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-4">
+    <section className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
+      {/* Card Container */}
       <div className="bg-white rounded-2xl shadow-xl p-10 max-w-md w-full">
+        {/* Heading */}
         <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
           Login to Your Account
         </h2>
 
+        {/* Form */}
         <form onSubmit={handleLogin} className="space-y-5">
           {/* Email */}
           <div>
@@ -58,7 +93,6 @@ export default function LoginPage() {
             <label className="block text-gray-600 font-medium mb-1">
               Password
             </label>
-
             <div className="relative">
               <input
                 type={showPass ? "text" : "password"}
@@ -67,7 +101,6 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-
               <span
                 onClick={() => setShowPass(!showPass)}
                 className="absolute right-4 top-3 cursor-pointer text-gray-500"
@@ -75,7 +108,6 @@ export default function LoginPage() {
                 {showPass ? <IoEyeOff size={20} /> : <FaEye size={20} />}
               </span>
             </div>
-
             {/* Forgot Password */}
             <div className="text-right mt-2">
               <a
@@ -87,16 +119,32 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Button */}
+          {/* Login Button */}
           <button
             type="submit"
-            className="w-full btn-primary-gradient text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition"
+            className="w-full bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition"
           >
             Login
           </button>
         </form>
 
-        {/* Bottom link */}
+        {/* Divider */}
+        <div className="flex items-center my-5">
+          <hr className="flex-grow border-t border-gray-300" />
+          <span className="mx-3 text-gray-400">or</span>
+          <hr className="flex-grow border-t border-gray-300" />
+        </div>
+
+        {/* Google Login */}
+        <button
+          onClick={handleGoogleLogin}
+          className="w-full flex items-center justify-center gap-2 bg-red-500 text-white py-3 rounded-xl hover:bg-red-600 transition"
+        >
+          <FaGoogle size={20} />
+          Sign in with Google
+        </button>
+
+        {/* Bottom Link */}
         <p className="text-center mt-6 text-gray-600">
           Don’t have an account?{" "}
           <a

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import PrivateRoute from "@/Components/PrivateRoute";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -40,38 +41,40 @@ export default function ProductDetails() {
   }
 
   return (
-    <div className="px-6 py-20 max-w-5xl mx-auto">
-      <button
-        onClick={() => window.history.back()}
-        className="mb-8 px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
-      >
-        ← Back
-      </button>
+    <PrivateRoute>
+      <div className="px-6 py-20 max-w-5xl mx-auto">
+        <button
+          onClick={() => window.history.back()}
+          className="mb-8 px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+        >
+          ← Back
+        </button>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Image container */}
-        <div className="relative w-full h-96">
-          <Image
-            src={product.images[0]}
-            alt={product.name}
-            fill
-            className="object-cover rounded-xl shadow-lg"
-          />
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Image container */}
+          <div className="relative w-full h-96">
+            <Image
+              src={product.images[0]}
+              alt={product.name}
+              fill
+              className="object-cover rounded-xl shadow-lg"
+            />
+          </div>
 
-        {/* Product info */}
-        <div>
-          <h1 className="text-4xl font-bold">{product.name}</h1>
-          <p className="text-blue-600 text-2xl mt-2 font-semibold">
-            ${product.price}
-          </p>
-          <p className="mt-6 text-gray-700">{product.description}</p>
-          <p className="mt-4 text-gray-400 text-sm">
-            Stock: {product.stock} | Created:{" "}
-            {new Date(product.createdAt).toLocaleDateString()}
-          </p>
+          {/* Product info */}
+          <div>
+            <h1 className="text-4xl font-bold">{product.name}</h1>
+            <p className="text-blue-600 text-2xl mt-2 font-semibold">
+              ${product.price}
+            </p>
+            <p className="mt-6 text-gray-700">{product.description}</p>
+            <p className="mt-4 text-gray-400 text-sm">
+              Stock: {product.stock} | Created:{" "}
+              {new Date(product.createdAt).toLocaleDateString()}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </PrivateRoute>
   );
 }
