@@ -21,7 +21,7 @@ export default function Testimonials() {
         const data = await res.json();
         setReviews(data);
       } catch (err) {
-        console.error(err);
+        throw err;
       }
     }
     fetchReviews();

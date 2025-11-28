@@ -61,8 +61,6 @@ export default function AddProductPage() {
       setDescription("");
       setRating("");
     } catch (error) {
-      console.error(error);
-
       Swal.fire({
         title: "Error!",
         text: "There was an issue adding your product.",

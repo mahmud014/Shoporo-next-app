@@ -27,18 +27,24 @@ export default function EditProductPage() {
         const res = await fetch(
           `https://shoporo-next-app-server.vercel.app/products/${id}`
         );
+
+        if (!res.ok) {
+          Swal.fire("Error!", "Product not found!", "error");
+          return;
+        }
+
         const data = await res.json();
+
         setForm({
-          name: data.name,
-          category: data.category,
-          price: data.price,
-          stock: data.stock,
-          description: data.description,
+          name: data.name || "",
+          category: data.category || "",
+          price: data.price || "",
+          stock: data.stock || "",
+          description: data.description || "",
           images: data.images || [""],
         });
       } catch (err) {
-        console.error(err);
-        Swal.fire("Error", "Failed to load product", "error");
+        Swal.fire("Error", "Failed to load product!", "error");
       } finally {
         setLoading(false);
       }
@@ -66,12 +72,24 @@ export default function EditProductPage() {
         }
       );
 
-      if (!res.ok) throw new Error("Update failed");
+      if (!res.ok) {
+        Swal.fire("Failed!", "Product update failed!", "error");
+        return;
+      }
 
-      Swal.fire("Updated!", "Product updated successfully", "success");
-      router.push("/dashboard/manage-products");
+      Swal.fire({
+        title: "Success!",
+        text: "Product updated successfully!",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+
+      setTimeout(() => {
+        router.push("/dashboard/manage-products");
+      }, 1500);
     } catch (err) {
-      Swal.fire("Error", "Failed to update product", "error");
+      Swal.fire("Error", "Something went wrong!", "error");
     }
   };
 
@@ -95,7 +113,6 @@ export default function EditProductPage() {
           />
 
           <label>Category</label>
-
           <input
             type="text"
             name="category"
@@ -107,7 +124,6 @@ export default function EditProductPage() {
           />
 
           <label>Price</label>
-
           <input
             type="number"
             name="price"
@@ -119,7 +135,6 @@ export default function EditProductPage() {
           />
 
           <label>Stock</label>
-
           <input
             type="number"
             name="stock"
@@ -131,7 +146,6 @@ export default function EditProductPage() {
           />
 
           <label>Description</label>
-
           <textarea
             name="description"
             value={form.description}
@@ -142,7 +156,6 @@ export default function EditProductPage() {
           />
 
           <label>Images</label>
-
           <input
             type="text"
             name="images"

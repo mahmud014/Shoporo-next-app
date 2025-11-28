@@ -1,37 +1,52 @@
 "use client";
 
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function NewsletterBanner() {
   const [email, setEmail] = useState("");
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
-    if (!email) return alert("Please enter an email!");
+    if (!email) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Email Required",
+        text: "Please enter your email address.",
+      });
+    }
 
     try {
-      // optional backend: POST to /subscribe
       await fetch("https://shoporo-next-app-server.vercel.app/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
 
-      alert("Subscribed successfully!");
+      Swal.fire({
+        icon: "success",
+        title: "Subscribed!",
+        text: "You have successfully subscribed to our newsletter.",
+      });
+
       setEmail("");
     } catch (err) {
-      console.error(err);
-      alert("Subscription failed!");
+      Swal.fire({
+        icon: "error",
+        title: "Subscription Failed",
+        text: "Something went wrong. Please try again later.",
+      });
     }
   };
 
   return (
     <section className="py-16">
       <div className="mx-auto">
-        <div className="btn-primary-gradient text-white p-10 shadow-lg md:px-100">
+        <div className="btn-primary-gradient text-white p-10 shadow-lg md:px-100 rounded-xl">
           <h2 className="text-3xl font-bold mb-4 text-center md:text-left">
             Join Our Newsletter
           </h2>
+
           <p className="mb-6 text-center md:text-left">
             Get exclusive offers, updates, and early access to new products.
           </p>
@@ -46,6 +61,7 @@ export default function NewsletterBanner() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="flex-1 px-4 py-3 rounded-lg text-black outline-none"
+              required
             />
 
             <button

@@ -16,7 +16,7 @@ export default function FeaturedProducts() {
         const data = await res.json();
         setProducts(data.slice(0, 6));
       } catch (err) {
-        console.error("Failed to fetch products:", err);
+        throw err;
       }
     }
     fetchProducts();

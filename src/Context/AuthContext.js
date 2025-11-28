@@ -37,7 +37,6 @@ export const AuthProvider = ({ children }) => {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
     } catch (error) {
-      console.error("Google Sign-In Error:", error);
       throw error;
     }
   };

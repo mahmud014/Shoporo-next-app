@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import Swal from "sweetalert2";
 import PrivateRoute from "../../../Components/PrivateRoute";
 
 export default function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -15,18 +17,41 @@ export default function ProductDetails() {
         const res = await fetch(
           `https://shoporo-next-app-server.vercel.app/products/${id}`
         );
-        if (!res.ok) throw new Error("Product not found");
+
+        if (!res.ok) {
+          Swal.fire({
+            icon: "error",
+            title: "Product Not Found",
+            text: "The product you're looking for doesn't exist.",
+          });
+          setProduct(null);
+          return;
+        }
 
         const data = await res.json();
         setProduct(data);
       } catch (err) {
-        console.error(err);
+        Swal.fire({
+          icon: "error",
+          title: "Failed to Load Product",
+          text: "Something went wrong. Please try again.",
+        });
         setProduct(null);
+      } finally {
+        setLoading(false);
       }
     }
 
     fetchProduct();
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="text-center py-20">
+        <h2 className="text-xl text-gray-500">Loading product...</h2>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -56,7 +81,7 @@ export default function ProductDetails() {
           {/* Image container */}
           <div className="relative w-full h-96">
             <Image
-              src={product.images[0]}
+              src={product?.images?.[0]}
               alt={product.name}
               fill
               className="object-cover rounded-xl shadow-lg"
@@ -66,10 +91,13 @@ export default function ProductDetails() {
           {/* Product info */}
           <div>
             <h1 className="text-4xl font-bold">{product.name}</h1>
+
             <p className="text-blue-600 text-2xl mt-2 font-semibold">
               ${product.price}
             </p>
+
             <p className="mt-6 text-gray-700">{product.description}</p>
+
             <p className="mt-4 text-gray-400 text-sm">
               Stock: {product.stock} | Created:{" "}
               {new Date(product.createdAt).toLocaleDateString()}
