@@ -50,7 +50,7 @@ export default function NewsletterBanner() {
 
             <button
               type="submit"
-              className="px-6 py-3 bg-black hover:bg-gray-800 rounded-lg font-semibold transition"
+              className="px-6 py-3 bg-black hover:bg-gray-800 rounded-lg font-semibold cursor-pointer transition"
             >
               Subscribe
             </button>
