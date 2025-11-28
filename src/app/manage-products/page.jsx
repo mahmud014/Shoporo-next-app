@@ -4,9 +4,12 @@ import PrivateRoute from "../../Components/PrivateRoute";
 import { useAuth } from "../../Context/AuthContext";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 export default function ManageProductsPage() {
   const { user } = useAuth();
+  const router = useRouter();
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,15 +28,21 @@ export default function ManageProductsPage() {
           `http://localhost:4000/products?email=${user.email}`
         );
         const data = await res.json();
+
         setProducts(
-          data.map((p) => ({
-            ...p,
-            _id: typeof p._id === "string" ? p._id : p._id.$oid,
-          }))
+          Array.isArray(data)
+            ? data.map((p) => ({
+                ...p,
+                _id: typeof p._id === "string" ? p._id : p._id?.$oid || "",
+              }))
+            : []
         );
-      } catch (err) {
-        console.error(err);
-        Swal.fire("Error", "Failed to fetch your products.", "error");
+      } catch {
+        Swal.fire(
+          "Error",
+          "Failed to fetch your products. Please try again later.",
+          "error"
+        );
       } finally {
         setLoading(false);
       }
@@ -42,7 +51,6 @@ export default function ManageProductsPage() {
     fetchProducts();
   }, [user?.email]);
 
-  // Delete product
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
       title: "Are you sure?",
@@ -60,14 +68,12 @@ export default function ManageProductsPage() {
       const res = await fetch(`http://localhost:4000/products/${id}`, {
         method: "DELETE",
       });
-      if (!res.ok) throw new Error("Delete failed");
+      if (!res.ok) throw new Error();
 
       Swal.fire("Deleted!", "Product has been deleted.", "success");
 
-      // Remove deleted product from state
       setProducts((prev) => prev.filter((p) => p._id !== id));
-    } catch (err) {
-      console.error(err);
+    } catch {
       Swal.fire("Error", "Failed to delete product.", "error");
     }
   };
@@ -109,7 +115,21 @@ export default function ManageProductsPage() {
                     <td className="px-4 py-2 border">
                       {new Date(p.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="px-4 py-2 border">
+                    <td className="px-4 py-2 border flex justify-center gap-2">
+                      <button
+                        onClick={() => router.push(`/products/${p._id}`)}
+                        className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                      >
+                        View
+                      </button>
+
+                      <button
+                        onClick={() => router.push(`/edit-product/${p._id}`)}
+                        className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                      >
+                        Edit
+                      </button>
+
                       <button
                         onClick={() => handleDelete(p._id)}
                         className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
