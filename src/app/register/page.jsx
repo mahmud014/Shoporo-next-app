@@ -8,7 +8,7 @@ import { FcGoogle } from "react-icons/fc";
 import { IoMdEyeOff } from "react-icons/io";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "@/Context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");

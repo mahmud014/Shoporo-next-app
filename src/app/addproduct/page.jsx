@@ -1,7 +1,7 @@
 "use client";
 
-import PrivateRoute from "@/Components/PrivateRoute";
-import { useAuth } from "@/Context/AuthContext";
+import PrivateRoute from "../../Components/PrivateRoute";
+import { useAuth } from "../../Context/AuthContext";
 import { useState } from "react";
 import Swal from "sweetalert2";
 

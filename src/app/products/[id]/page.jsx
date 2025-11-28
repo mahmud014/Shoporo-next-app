@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import PrivateRoute from "@/Components/PrivateRoute";
+import PrivateRoute from "../../../Components/PrivateRoute";
 
 export default function ProductDetails() {
   const { id } = useParams();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/Context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 import Link from "next/link";
 import { HiBars3BottomRight, HiChevronDown } from "react-icons/hi2";
 import Swal from "sweetalert2";
