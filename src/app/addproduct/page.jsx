@@ -34,11 +34,14 @@ export default function AddProductPage() {
     try {
       setLoading(true);
 
-      const res = await fetch(`http://localhost:4000/products`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newProduct),
-      });
+      const res = await fetch(
+        `https://shoporo-next-app-server.vercel.app/products`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newProduct),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to add product");
 

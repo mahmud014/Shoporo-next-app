@@ -24,7 +24,9 @@ export default function EditProductPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch(`http://localhost:4000/products/${id}`);
+        const res = await fetch(
+          `https://shoporo-next-app-server.vercel.app/products/${id}`
+        );
         const data = await res.json();
         setForm({
           name: data.name,
@@ -55,11 +57,14 @@ export default function EditProductPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:4000/products/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      const res = await fetch(
+        `https://shoporo-next-app-server.vercel.app/products/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        }
+      );
 
       if (!res.ok) throw new Error("Update failed");
 

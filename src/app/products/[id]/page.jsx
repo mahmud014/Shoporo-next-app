@@ -12,7 +12,9 @@ export default function ProductDetails() {
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const res = await fetch(`http://localhost:4000/products/${id}`);
+        const res = await fetch(
+          `https://shoporo-next-app-server.vercel.app/products/${id}`
+        );
         if (!res.ok) throw new Error("Product not found");
 
         const data = await res.json();

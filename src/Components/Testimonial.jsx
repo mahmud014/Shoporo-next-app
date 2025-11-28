@@ -14,7 +14,9 @@ export default function Testimonials() {
   useEffect(() => {
     async function fetchReviews() {
       try {
-        const res = await fetch("http://localhost:4000/reviews");
+        const res = await fetch(
+          "https://shoporo-next-app-server.vercel.app/reviews"
+        );
         if (!res.ok) throw new Error("Failed to fetch reviews");
         const data = await res.json();
         setReviews(data);

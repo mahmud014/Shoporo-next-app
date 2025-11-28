@@ -11,7 +11,7 @@ export default function NewsletterBanner() {
 
     try {
       // optional backend: POST to /subscribe
-      await fetch("http://localhost:4000/subscribe", {
+      await fetch("https://shoporo-next-app-server.vercel.app/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

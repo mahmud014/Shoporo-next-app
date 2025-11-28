@@ -25,7 +25,7 @@ export default function ManageProductsPage() {
     async function fetchProducts() {
       try {
         const res = await fetch(
-          `http://localhost:4000/products?email=${user.email}`
+          `https://shoporo-next-app-server.vercel.app/products?email=${user.email}`
         );
         const data = await res.json();
 
@@ -65,9 +65,12 @@ export default function ManageProductsPage() {
     if (!confirm.isConfirmed) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/products/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://shoporo-next-app-server.vercel.app/products/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!res.ok) throw new Error();
 
       Swal.fire("Deleted!", "Product has been deleted.", "success");

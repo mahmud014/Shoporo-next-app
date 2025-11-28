@@ -10,7 +10,9 @@ export default function FeaturedProducts() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await fetch("http://localhost:4000/products");
+        const res = await fetch(
+          "https://shoporo-next-app-server.vercel.app/products"
+        );
         const data = await res.json();
         setProducts(data.slice(0, 6));
       } catch (err) {
