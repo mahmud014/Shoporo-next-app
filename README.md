@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🛍️ Shopora — Full-Stack E-Commerce Web Apllication
 
-## Getting Started
+A simple full-stack eCommerce-style application built with **Next.js App Router**, **Firebase Authentication**, **Express.js**, and **MongoDB**.  
+Includes public pages, protected pages, product management, authentication, and a polished responsive UI.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Technologies Used
+
+### Frontend
+- Next.js 14 (App Router)
+- Tailwind CSS
+- Firebase Authentication
+- Context API
+- SweetAlert2
+
+### Backend
+- Express.js
+- MongoDB (Atlas)
+- CORS
+- dotenv
+
+---
+
+## 📁 Features
+
+### 1. Landing Page
+- Sticky Navbar (logo, routes, login/register)
+- After login → user dropdown (Profile, Add Product, Manage Products, Logout)
+- Hero section
+- 4 additional sections (features/items/testimonials/banners)
+- Responsive grid & card UI
+- Footer
+
+### 2. Authentication
+- Login/Register with Email + Password
+- Google Login
+- Redirect to `/` after login
+
+### 3. Products List Page (`/products`)
+- Search bar
+- Category filter (UI only)
+- Grid of 6+ product cards (image, title, description, price, button)
+
+### 4. Product Details Page
+- Large image/banner
+- Full description
+- Price, meta info
+- Back button
+
+### 5. Protected Pages
+#### `/add-product`
+- Only logged-in users can access
+- Form:
+  - Title
+  - Short description
+  - Full description
+  - Price
+  - Date / priority
+  - Image URL
+- Success message with SweetAlert
+
+#### `/manage-products`
+- Table/grid layout
+- View product
+- Delete product
+
+---
+
+## 🔥 Backend API (Express)
+- GET /products
+- GET /products/:id
+- POST /products
+- DELETE /products/:id
+  
+## 🛠️ Installation & Setup
+### Clone Repo
+```jsx
+client- git clone https://github.com/mahmud014/Shoporo-next-app
+server- https://github.com/mahmud014/Shoporo-next-app-server
+
+cd shopora
 ```
+### 🔧 Backend Setup
+```jsx
+npm install
+```
+### Start Server
+```jsx
+npm start
+```
+## 🌐 Deployment
+### Frontend → Vercel
+### Backend → Vercel
+### Database → MongoDB Atlas
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+----
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Live Link
+- client- https://shoporo-next-app.vercel.app
+- Server- https://shoporo-next-app-server.vercel.app
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+  
+## 👨‍💻 Developer
+- Author: Md. Shukur Mahmud
+- 📧 Email: anik955720@gmail.com
+- 🔗 GitHub: https://github.com/mahmud014
+- 🔗 LinkedIn: https://www.linkedin.com/in/shukurmahmud
